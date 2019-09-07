@@ -6,7 +6,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@master
     - name: Set up Ruby 2.6
@@ -18,9 +17,6 @@ jobs:
         node-version: '10.x'
     - run: npm install -g yarn
     - run: yarn install
-      with:
-        postgresql version: '11.3'
-        postgresql user: root
     - name: Build
       run: |
         gem install bundler
