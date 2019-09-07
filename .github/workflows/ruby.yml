@@ -1,0 +1,31 @@
+name: Ruby
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        version: 2.6.x
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - run: npm install -g yarn
+    - run: yarn install
+      with:
+        postgresql version: '11.3'
+        postgresql user: root
+    - name: Build
+      run: |
+        gem install bundler
+        bundle install --jobs=4 --retry=3 --path=vendor/bundle
+        bundle exec rails db:create
+        bundle exec rails db:schema:load
+    - name: Test
+      run: bundle exec rails test
